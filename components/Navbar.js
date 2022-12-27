@@ -1,9 +1,13 @@
-import React from 'react'
+import React,{useContext} from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import {DataContext} from '../store/GlobalState'
 
 function Navbar() {
 const router=useRouter()
+const {state, dispatch} = useContext(DataContext)
+    const { auth, cart } = state
+
 const isactive=r=>{
   if(r===router.pathname){
     return 'active'
@@ -12,6 +16,28 @@ const isactive=r=>{
   }
 }
 
+const handleLogout = () => {
+  Cookie.remove('refreshtoken', {path: 'api/auth/accessToken'})
+  localStorage.removeItem('firstLogin')
+  dispatch({ type: 'AUTH', payload: {} })
+  dispatch({ type: 'NOTIFY', payload: {success: 'Logged out!'} })
+  return router.push('/')
+}
+
+const loggedRouter=()=>{
+  return(
+    <li className="nav-item dropdown">
+    <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+       USER NAME
+    </a>
+    <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+      <li><a className="dropdown-item" href="#">PROFILE</a></li>
+      <li><a className="dropdown-item" href="#">LAYOUT</a></li>
+    </ul>
+  </li>
+  )
+
+}
 
 
   return (
@@ -35,23 +61,19 @@ const isactive=r=>{
 
            </Link>
         </li>
-        <li className="nav-item">
+       {
+           Object.keys(auth).length ===0
+           ?<li className="nav-item">
           
-          <Link href="/Signin" legacyBehavior> 
-             <a className={"nav-link"+isactive('/Signin')} >SIGNIN</a>
-          </Link>
-        </li>
+           <Link href="/Signin" legacyBehavior> 
+              <a className={"nav-link"+isactive('/Signin')} >SIGNIN</a>
+           </Link>
+         </li>
+          :loggedRouter()
+       }
 
 
-        <li className="nav-item dropdown">
-          <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-             USER NAME
-          </a>
-          <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <li><a className="dropdown-item" href="#">PROFILE</a></li>
-            <li><a className="dropdown-item" href="#">LAYOUT</a></li>
-          </ul>
-        </li>
+       
       </ul>
     </div>
   </div>
