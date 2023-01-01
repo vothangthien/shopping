@@ -5,6 +5,7 @@ import { createAccessToken } from '../../../utils/generateToken'
 
 connectDB()
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default async (req, res) => {
     try{
         const rf_token = req.cookies.refreshtoken;

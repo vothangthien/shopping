@@ -1,20 +1,20 @@
 import React from 'react'
 import Link from 'next/link'
-import { useState,useContext } from 'react'
+import { useState,useContext,useEffect } from 'react'
 import valid from '../utils/valid';
 import {DataContext} from '../store/GlobalState'
 import { useRouter } from 'next/router'
 import {postData}from '../utils/fetchData'
 
 function Register() {
-const initialState={name:'',email:'',password:'',cf_password:''};
-const [userData,setUserData]=useState(initialState);
-const {name,email,password,cf_password}=userData;
+  const initialState = { name: '', email: '', password: '', cf_password: '' }
+  const [userData, setUserData] = useState(initialState)
+  const { name, email, password, cf_password } = userData
 
-const {state, dispatch} = useContext(DataContext)
-const { auth } = state
-const router = useRouter()
+  const {state, dispatch} = useContext(DataContext)
+  const { auth } = state
 
+  const router = useRouter()
 
 const handlechangeinput=e=>{
   const{name,value}=e.target;
@@ -36,6 +36,9 @@ if(res.err) return dispatch({ type: 'NOTIFY', payload: {error: res.err} })
 
 return dispatch({ type: 'NOTIFY', payload: {success: res.msg} })
 };
+useEffect(() => {
+  if(Object.keys(auth).length !== 0) router.push("/")
+}, [auth, router])
 
 
 

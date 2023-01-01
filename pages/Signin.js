@@ -3,7 +3,7 @@ import Link from 'next/link'
 import {useState, useContext, useEffect} from 'react'
 import {DataContext} from '../store/GlobalState'
 import {postData} from '../utils/fetchData'
-import Cookie from 'js-cookie'
+import Cookies from 'js-cookie'
 import { useRouter } from 'next/router'
 
 function Signin() {
@@ -35,17 +35,16 @@ function Signin() {
       user: res.user
     }})
 
-    Cookie.set('refreshtoken', res.refresh_token, {
+    Cookies.set('refreshtoken', res.refresh_token, {
       path: 'api/auth/accessToken',
       expires: 7
     })
-
-    localStorage.setItem('firstLogin', true)
+    localStorage.removeItem('firstLogin', true)
   }
 
   useEffect(() => {
     if(Object.keys(auth).length !== 0) router.push("/")
-  }, [auth])
+  },[auth, router])
 
 
   return (
