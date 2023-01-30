@@ -1,8 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link"
-
+import { useContext } from "react"
+import {DataContext} from '../../store/GlobalState'
+import { addToCart } from "../../store/Actions"
 
 const ProductItem =({product})=>{
+
+  const {state, dispatch}=useContext(DataContext)
+  const {cart}=state
 
 const userLink=()=>{
   return(
@@ -10,7 +15,11 @@ const userLink=()=>{
       <Link href={`product/${product._id}`} legacyBehavior  >
         <a className="btn btn-info" style={{marginRight:'5px',flex:1}}> VIEW</a>
       </Link>
-      <button className="btn btn-success" style={{marginLeft:'5px', flex:1}}>      
+      <button className="btn btn-success" 
+        style={{marginLeft:'5px', flex:1}}
+        disabled={product.inStock ===0 ? true:false}// khi không còn sản phẩm sẽ không hiện lên nút mua
+         onClick={()=> dispatch(addToCart(product,cart))}// chọn sản phẩm mua
+       >      
                BUY
       </button>
     </>

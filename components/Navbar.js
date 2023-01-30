@@ -81,11 +81,29 @@ const loggedRouter=()=>{
       <span className="navbar-toggler-icon"></span>
     </button>
     <div className="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
-      <ul className="navbar-nav">
+      <ul className="navbar-nav p-1">
       
         <li className="nav-item">
           <Link href="/Cart" legacyBehavior> 
-              <a className={"nav-link"+isactive('/Cart')} >CART</a>
+              <a className={"nav-link"+isactive('/Cart')} >
+                <i className='fas fa-shopping-cart position-relative'>
+                <span className='position-absolute' 
+                  style={{
+                    padding: '3px 6px',
+                    background:'#ed143dc2',
+                    borderRadius:'50%',
+                    top: '-10px',
+                    right: '-10px',
+                    color:'white',
+                    fontSize:'14'
+                  }}>
+                 
+                     {cart.length}
+                  </span>
+                CART
+
+                </i>
+                </a>
 
            </Link>
         </li>
